@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lachlan Barber's Trivia Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Lachlan Barber's Trivia Quiz!</h1>
+    <div id="quiz-container">
+        <p id="question"></p>
+        <div id="choices"></div>
+        <button id="submit">Submit Answer</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "In Stranger Things, what is the name of the alternate dimension?",
+                choices: ["The Upside Down", "The Other Side", "The Dark World", "The Mirror Realm"],
+                correctAnswer: 0
+            },
+            {
+                question: "Who is Darth Vader's son in Star Wars?",
+                choices: ["Obi-Wan Kenobi", "Han Solo", "Luke Skywalker", "Anakin Skywalker"],
+                correctAnswer: 2
+            },
+            {
+                question: "In Five Nights at Freddy's, what is the name of the main antagonist animatronic?",
+                choices: ["Bonnie", "Chica", "Foxy", "Freddy Fazbear"],
+                correctAnswer: 3
+            },
+            {
+                question: "What is Eleven's favorite food in Stranger Things?",
+                choices: ["Pizza", "Burgers", "Eggos", "Ice Cream"],
+                correctAnswer: 2
+            },
+            {
+                question: "Who is known as 'The Child' or 'Baby Yoda' in The Mandalorian?",
+                choices: ["Grogu", "Yoda", "Yaddle", "Yoga"],
+                correctAnswer: 0
+            },
+            {
+                question: "In Five Nights at Freddy's, what is the name of the security guard in the first game?",
+                choices: ["Jeremy Fitzgerald", "Fritz Smith", "Michael Afton", "Mike Schmidt"],
+                correctAnswer: 3
+            },
+            {
+                question: "What is Will Byers' superhero alter ego in Stranger Things?",
+                choices: ["The Flash", "Will the Wise", "Zombie Boy", "The Mind Flayer"],
+                correctAnswer: 1
+            },
+            {
+                question: "Who says the famous line 'I am your father' in Star Wars?",
+                choices: ["Obi-Wan Kenobi", "Emperor Palpatine", "Darth Vader", "Yoda"],
+                correctAnswer: 2
+            },
+            {
+                question: "What is the name of the pizzeria in the first Five Nights at Freddy's game?",
+                choices: ["Freddy Fazbear's Pizza", "Chica's Party World", "Circus Baby's Pizza World", "Fredbear's Family Diner"],
+                correctAnswer: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionEl = document.getElementById('question');
+        const choicesEl = document.getElementById('choices');
+        const submitBtn = document.getElementById('submit');
+        const resultEl = document.getElementById('result');
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            questionEl.textContent = question.question;
+            choicesEl.innerHTML = '';
+            for (let i = 0; i < question.choices.length; i++) {
+                const choice = question.choices[i];
+                choicesEl.innerHTML += `
+                    <div>
+                        <input type="radio" id="choice${i}" name="choice" value="${i}">
+                        <label for="choice${i}">${choice}</label>
+                    </div>
+                `;
+            }
+        }
+
+        function checkAnswer() {
+            const selectedChoice = document.querySelector('input[name="choice"]:checked');
+            if (!selectedChoice) {
+                alert('Please select an answer!');
+                return;
+            }
+            const answer = parseInt(selectedChoice.value);
+            if (answer === questions[currentQuestion].correctAnswer) {
+                score++;
+                resultEl.textContent = 'Correct!';
+                resultEl.style.color = 'green';
+            } else {
+                resultEl.textContent = 'Sorry, that\'s incorrect.';
+                resultEl.style.color = 'red';
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            questionEl.textContent = `Quiz complete! You scored ${score} out of ${questions.length}.`;
+            choicesEl.innerHTML = '';
+            submitBtn.style.display = 'none';
+            resultEl.textContent = '';
+        }
+
+        submitBtn.addEventListener('click', checkAnswer);
+        loadQuestion();
+    </script>
+</body>
+</html>
